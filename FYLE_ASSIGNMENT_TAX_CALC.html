@@ -95,7 +95,7 @@
         let extraIncome = $('#extraIncome').val();
         let deductions = $('#deductions').val();
         let totalIncome = calculateTax(age, income, extraIncome, deductions);
-        $('#result').text(`Total Income: ${totalIncome.toFixed(2)} Lakhs`);
+        $('#result').text(`Total Income: ${totalIncome.toFixed(2)} `);
         $('#resultModal').modal('show');
       }
     });

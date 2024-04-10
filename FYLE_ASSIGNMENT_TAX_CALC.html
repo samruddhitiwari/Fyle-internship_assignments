@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tax Calculator</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .error-icon {
+      display: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>Tax Calculator</h2>
+  <form id="taxForm">
+    <div class="form-group">
+      <label for="age">Age:</label>
+      <select class="form-control" id="age">
+        <option value="<40">&lt; 40</option>
+        <option value=">=40 <60">&ge; 40 &lt; 60</option>
+        <option value=">=60">&ge; 60</option>
+      </select>
+      <div id="ageError" class="text-danger error-icon" title="Age is mandatory">*</div>
+    </div>
+    <div class="form-group">
+      <label for="income">Gross Annual Income:</label>
+      <input type="number" class="form-control" id="income">
+      <div id="incomeError" class="text-danger error-icon" title="Income is mandatory">*</div>
+    </div>
+    <div class="form-group">
+      <label for="extraIncome">Extra Income:</label>
+      <input type="number" class="form-control" id="extraIncome">
+      <div id="extraIncomeError" class="text-danger error-icon" title="Extra Income is mandatory">*</div>
+    </div>
+    <div class="form-group">
+      <label for="deductions">Deductions:</label>
+      <input type="number" class="form-control" id="deductions">
+      <div id="deductionsError" class="text-danger error-icon" title="Deductions is mandatory">*</div>
+    </div>
+    <button type="button" class="btn btn-primary" id="submitBtn">Submit</button>
+  </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resultModalLabel">Tax Calculation Result</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="result"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Function to calculate tax
+    function calculateTax(age, income, extraIncome, deductions) {
+      let totalIncome = parseFloat(income) + parseFloat(extraIncome) - parseFloat(deductions);
+      return totalIncome;
+    }
+
+    // Function to validate form inputs
+    function validateForm() {
+      let isValid = true;
+      $('input, select').each(function() {
+        if (!$(this).val()) {
+          isValid = false;
+          $(this).next('.error-icon').show();
+        } else {
+          $(this).next('.error-icon').hide();
+        }
+      });
+      return isValid;
+    }
+
+    // Submit button click event
+    $('#submitBtn').click(function() {
+      if (validateForm()) {
+        let age = $('#age').val();
+        let income = $('#income').val();
+        let extraIncome = $('#extraIncome').val();
+        let deductions = $('#deductions').val();
+        let totalIncome = calculateTax(age, income, extraIncome, deductions);
+        $('#result').text(`Total Income: ${totalIncome.toFixed(2)} Lakhs`);
+        $('#resultModal').modal('show');
+      }
+    });
+  });
+</script>
+</body>
+</html>
